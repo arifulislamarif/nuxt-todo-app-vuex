@@ -1,22 +1,30 @@
+import axios from 'axios'
+
 export const state = () => ({
-  // counter: 0
-  students: [
-    { name: 'arif', roll: 12345 },
-    { name: 'ariful', roll: 12345 }
-  ]
+  students: []
 })
 
+export const actions = {
+  studentData ({ commit }) {
+    axios({ url: 'https://jsonplaceholder.typicode.com/users', method: 'GET' })
+      .then((resp) => {
+        const users = resp.data
+        commit('fetch_users', users)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+}
+
 export const mutations = {
-  studentAdd (state, { info }) {
+  studentAdd (state, info) {
     state.students.push({
       name: info.name,
-      roll: info.roll
+      email: info.email
     })
-
-    // add(state, { text }) {
-    //   state.list.push({
-    //     text,
-    //     done: false
-    //   })
+  },
+  fetch_users (state, users) {
+    state.students = users
   }
 }

@@ -15,7 +15,7 @@
                     Name
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-black-500 uppercase tracking-wider">
-                    Roll
+                    Email
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-black-500 uppercase tracking-wider">
                     Action
@@ -36,12 +36,16 @@
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm text-black-900">
-                      {{ student.roll }}
+                      {{ student.email }}
                     </div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                    <a href="#" class="text-indigo-600 hover:text-indigo-900">Delete</a>
+                    <button href="#" class="text-indigo-600 hover:text-indigo-900">
+                      Edit
+                    </button>
+                    <button class="text-indigo-600 hover:text-indigo-900" @click.prevent="delete_todo(index)">
+                      Delete
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -65,12 +69,12 @@
               >
             </div>
             <div>
-              <label for="password" class="sr-only">Roll</label>
+              <label for="password" class="sr-only">Email</label>
               <input
-                v-model="roll"
+                v-model="email"
                 type="text"
                 class="appearance-none my-5 rounded-none relative block w-full px-3 py-2 border border-black-300 placeholder-black-500 text-black-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Roll"
+                placeholder="Email"
               >
             </div>
           </div>
@@ -93,7 +97,8 @@ export default {
   data () {
     return {
       name: '',
-      roll: ''
+      email: '',
+      isEditing: false
     }
   },
   computed: {
@@ -101,27 +106,21 @@ export default {
       return this.$store.state.students
     }
   },
+  mounted () {
+    this.$store.dispatch('studentData')
+  },
   methods: {
     studentFormSubmit () {
-      // this.$store.state.students.push( name: this.name, roll: this.roll );
-      this.store.commit('studentAdd', { name: this.name, roll: this.roll })
+      this.$store.commit('studentAdd', { name: this.name, email: this.email })
+    },
+    delete_todo (id) {
+      this.$store.state.students.splice(id, 1)
     }
-    // increment () {
-    //   this.$store.commit('increment', 1)
-    // },
-    // decrement () {
-    //   this.$store.commit('decrement', 1)
-    // }
   }
 }
 </script>
 
 <style>
-/* Sample `apply` at-rules with Tailwind CSS
-.container {
-@apply min-h-screen flex justify-center items-center text-center mx-auto;
-}
-*/
 .container {
   margin: 0 auto;
   min-height: 100vh;
